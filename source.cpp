@@ -100,30 +100,7 @@ bool check(char* value)
 }
 void fill(list2& list, char* str)
 {
-    /*int k = 0;
-    if (strlen(str)%9 == 0)
-    {
-        k = strlen(str) / 9;
-    }
-    else
-    {
-        k = strlen(str) / 9 + 1;
-    }
-    int p = 0;
-    for (int i = 0; i < k; i++)
-    {
-        int sum = 0;
-        int q = 8;
-        for (int j = p; j < p + 9; j++) {
-            
-            int s = (int) str[j]-48;
-            sum = sum + s*pow(10,q);
-            q--;
-            cnt++;
-        }
-        add(list, sum);
-        p = p + 9;
-    }*/
+
     /*
     int cnt = strlen(str);
     int temp = strlen(str);
@@ -154,38 +131,28 @@ void fill(list2& list, char* str)
     while (temp / 9 != 0)
     {
         int sum = 0;
-        int q = 8;
+        int q = 0;
         for (int j = cnt; j < 9 * p; j++) {
 
             int s = (int)str[j] - 48;
             sum = sum + s * pow(10, q);
-            q--;
+            q++;
             cnt++;
         }
-        
-        if (p-1 == 0) {
-            if (sum % 100000000 == 0)sum = sum / 100000000;
-            if (sum % 10000000 == 0)sum = sum / 10000000;
-            if (sum % 1000000 == 0)sum = sum / 1000000;
-            if (sum % 100000 == 0)sum = sum / 100000;
-            if (sum % 10000 == 0)sum = sum / 10000;
-            if (sum % 1000 == 0)sum = sum / 1000;
-            if (sum % 100 == 0)sum = sum / 100;
-        }
         p++;
-        add(list, sum);
+        add_to_begin(list, sum);
         temp -= 9;
     }
     if (temp != 0)
     {
-        int q = strlen(str) - cnt-1;
+        int q = 0;
         int sum = 0;
         for (int j = cnt; j < strlen(str); j++) {
             int s = (int)str[j] - 48;
             sum = sum + s * pow(10, q);
-            q--;
+            q++;
         }
-        add(list,sum);
+        add_to_begin(list,sum);
     }
     /*
     if (temp != 0)
@@ -271,19 +238,28 @@ void show_content()
     char* data = nullptr;
     get_form_data(data);
     if ((data && strlen(data)) > 0) {
-        char* value = nullptr;
+        char* value = nullptr; 
         get_param_value(value, "dlist", data);
         if (check(value))
         {
             char* context = nullptr;
             char* number = strtok_s(context, "+", &value);
-            fill(list1, number);
-            fill(list2, value);
-           
             cout << number;
             cout << " + ";
             cout << value;
             cout << " = ";
+            int rest1 = strlen(number) % 2;
+            for (int i = 0; i < (strlen(number) - rest1) / 2; i++) {
+                swap(number[i], number[strlen(number) - 1 - i]);
+            }
+            int rest2 = strlen(value) % 2;
+            for (int i = 0; i < (strlen(value) - rest2) / 2; i++) {
+                swap(value[i], value[strlen(value) - 1 - i]);
+            }
+            fill(list1, number);
+            fill(list2, value);
+           
+            
             resh(list1, list2);
         }
         else
