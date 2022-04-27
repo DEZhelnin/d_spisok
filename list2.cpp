@@ -23,6 +23,23 @@ void add(list2& list, int data)
 		list.last = newel;
 	}
 }
+void add_to_begin(list2& list, int data)
+{
+	elem* newel = new elem;
+	newel->x = data;
+	list.count++;
+	if (!list.first)
+	{
+		list.first = list.last = newel;
+	}
+
+	else
+	{
+		newel->next = list.first;
+		list.first->prev = newel;
+		list.first = newel;
+	}
+}
 
 bool remove(list2& list, int pos)
 {
